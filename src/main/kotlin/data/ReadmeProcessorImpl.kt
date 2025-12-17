@@ -85,7 +85,7 @@ internal class ReadmeProcessorImpl(
         "[${readmeLines?.firstOrNull()?.replaceFirst("#", "")?.trim()}]($html_url)"
 
     private fun GitHubRepo.getStringWithLinkedButton(): String =
-        "[[open]]($html_url) ${readmeLines?.firstOrNull()?.trimStart('#', ' ')}"
+        "${readmeLines?.firstOrNull()?.trimStart('#', ' ')} [[open]]($html_url) "
 
     /**
      * Получает и форматирует текущее время по московскому времени в виде строки.
