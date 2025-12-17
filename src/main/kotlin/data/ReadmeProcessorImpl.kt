@@ -47,7 +47,7 @@ internal class ReadmeProcessorImpl(
                 repoMap[key]?.sortedBy {
                     it.readmeLines?.firstOrNull()
                 }?.forEach { repo ->
-                    append(repo.getLinkedString())
+                    append(repo.getStringWithLinkedButton())
                     newLine()
                 }
                 append("</details>")
@@ -83,6 +83,9 @@ internal class ReadmeProcessorImpl(
      */
     private fun GitHubRepo.getLinkedString(): String =
         "[${readmeLines?.firstOrNull()?.replaceFirst("#", "")?.trim()}]($html_url)"
+
+    private fun GitHubRepo.getStringWithLinkedButton(): String =
+        "[[open]]($html_url) ${readmeLines?.firstOrNull()?.trimStart('#', ' ')}"
 
     /**
      * Получает и форматирует текущее время по московскому времени в виде строки.
