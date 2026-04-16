@@ -3,6 +3,7 @@ import data.service.client.base.Client
 import domain.ReadmeProcessor
 import domain.ReposInfoWithReadmeRepository
 import domain.add
+import domain.models.GitHubRepo
 import domain.models.semesters
 import domain.repoMapOf
 import kotlinx.coroutines.coroutineScope
@@ -54,6 +55,7 @@ suspend fun main(args: Array<String>) = coroutineScope {
     val reposInfoWithReadmeRepository = koin.get<ReposInfoWithReadmeRepository>()
 
     val repoMap = repoMapOf()
+    val others = mutableListOf<GitHubRepo>()
 
     reposInfoWithReadmeRepository.getInfo(
         accountName = accountName,
@@ -62,7 +64,7 @@ suspend fun main(args: Array<String>) = coroutineScope {
         .collect { repo ->
             val semesters = repo.semesters
             if (semesters == null) {
-                repoMap.add("others", repo)
+                others.add(repo)
             } else {
                 semesters.forEach { repoMap.add(it, repo) }
             }
@@ -70,7 +72,8 @@ suspend fun main(args: Array<String>) = coroutineScope {
 
     getKoin().get<ReadmeProcessor>()
         .processReadme(
-            repoMap = repoMap,
+            mapBySemesters = repoMap,
+            others = others,
             repoMapProcessor = RepoMapProcessor.FILE,
         )
     val client = koin.get<Client>()

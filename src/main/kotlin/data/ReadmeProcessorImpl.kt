@@ -18,12 +18,13 @@ internal class ReadmeProcessorImpl(
     /**
      * Обрабатывает и генерирует содержимое файла README на основе карты репозиториев.
      *
-     * @param repoMap Карта репозиториев, сгруппированных по ключам (например, семестрам).
+     * @param mapBySemesters Карта репозиториев, сгруппированных по ключам (например, семестрам).
      * @param repoMapProcessor Процессор, отвечающий за запись сгенерированного содержимого.
      */
     override fun processReadme(
-        repoMap: RepoMap,
-        repoMapProcessor: RepoMapProcessor,
+        mapBySemesters: RepoMap,
+        others: MutableList<GitHubRepo>,
+        repoMapProcessor: RepoMapProcessor
     ) {
         repoMapProcessor.apply {
             clear()
@@ -31,7 +32,7 @@ internal class ReadmeProcessorImpl(
             newLine()
             append(">Updated ${getCurrentMoscowTimeAsString()}")
             newLine()
-            repoMap.keys.sortedAsSemesters().forEach { key ->
+            mapBySemesters.keys.sortedAsSemesters().forEach { key ->
 //            <details>
 //<summary>Semester: 2</summary>
 //
@@ -41,10 +42,10 @@ internal class ReadmeProcessorImpl(
 //</details>
                 append(
                     "<details>\n" +
-                            "<summary>${if (key != "others") "Semester: " else ""}$key</summary>"
+                            "<summary>${"Semester: "}$key</summary>"
                 )
                 newLine()
-                repoMap[key]?.sortedBy {
+                mapBySemesters[key]?.sortedBy {
                     it.readmeLines?.firstOrNull()
                 }?.forEach { repo ->
                     append(repo.getStringWithLinkedButton())
@@ -53,7 +54,17 @@ internal class ReadmeProcessorImpl(
                 append("</details>")
                 newLine()
             }
+            append(
+                "<details>\n" +
+                        "<summary>others</summary>"
+            )
+            others.sortedBy { it.readmeLines?.firstOrNull() }.forEach { repo ->
+                append(repo.getStringWithLinkedButton())
+                newLine()
+            }
+            append("</details>")
         }
+
     }
 
     /**
