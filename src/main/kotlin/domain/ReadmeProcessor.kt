@@ -11,7 +11,8 @@ interface ReadmeProcessor {
      * @param repoMapProcessor Процессор, отвечающий за запись сгенерированного содержимого.
      */
     fun processReadme(
-        repoMap: RepoMap,
+        mapBySemesters: RepoMap,
+        others: MutableList<GitHubRepo>,
         repoMapProcessor: RepoMapProcessor,
     )
 }

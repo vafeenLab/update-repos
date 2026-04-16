@@ -2,7 +2,7 @@
   <configuration default="false" name="MainKt" type="JetRunConfigurationType" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="MainKt" />
     <module name="Update-repos.main" />
-    <option name="PROGRAM_PARAMETERS" value="-ac vafeenHub" />
+    <option name="PROGRAM_PARAMETERS" value="-ac vafeenLab" />
     <shortenClasspath name="NONE" />
     <method v="2">
       <option name="Make" enabled="true" />
