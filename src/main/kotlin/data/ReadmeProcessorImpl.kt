@@ -58,6 +58,7 @@ internal class ReadmeProcessorImpl(
                 "<details>\n" +
                         "<summary>others</summary>"
             )
+            newLine()
             others.sortedBy { it.readmeLines?.firstOrNull() }.forEach { repo ->
                 append(repo.getStringWithLinkedButton())
                 newLine()
